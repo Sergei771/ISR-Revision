@@ -65,7 +65,7 @@ function updateActiveNav(targetId) {
 }
 
 function toggleSection(sectionId) {
-    console.log("Toggling section:", sectionId);
+    // console.log("[toggleSection] Toggling section:", sectionId); // Removing log
     
     // Récupérer toutes les sections à chaque appel plutôt que d'utiliser la variable globale
     const allSections = document.querySelectorAll('.section');
@@ -86,7 +86,7 @@ function toggleSection(sectionId) {
 
     // Si la section n'est toujours pas trouvée, essayons de la chercher directement par ID
     if (!foundSection) {
-        console.log(`Section not found in initial query, trying direct ID lookup: ${sectionId}`);
+        // console.log(`Section not found in initial query, trying direct ID lookup: ${sectionId}`); // Removing log
         const directSection = document.getElementById(sectionId);
         if (directSection && directSection.classList.contains('section')) {
             // Masquer toutes les autres sections
@@ -103,7 +103,7 @@ function toggleSection(sectionId) {
             updateProgress();
             foundSection = true;
         } else {
-            console.error(`Section with ID '${sectionId}' not found.`);
+            // console.error(`Section with ID '${sectionId}' not found.`); // Removing log
             return; // Stop if section doesn't exist
         }
     }
@@ -120,8 +120,9 @@ function toggleSection(sectionId) {
          window.scrollTo(0, 0); // Fallback to window scroll if main-content doesn't exist
      }
 
-    // If on mobile, close sidebar after selection
-    if (window.innerWidth <= 768 && sidebar && !sidebar.classList.contains('sidebar-collapsed')) {
+    // Close sidebar on mobile after section selection
+    if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('sidebar-collapsed')) {
+        // console.log("[toggleSection] Sidebar is visible on mobile. Calling toggleSidebar() to CLOSE."); // Removing log
         toggleSidebar();
     }
 
@@ -134,31 +135,69 @@ function toggleSection(sectionId) {
 function toggleSubnav(subnavId) {
     const subnav = document.getElementById(subnavId);
     const parentNavItem = document.querySelector(`.nav-item[onclick*="'${subnavId}'"]`);
-    const icon = parentNavItem ? parentNavItem.querySelector('.fa-chevron-down, .fa-chevron-right') : null; // Handle both icons
+    const icon = parentNavItem ? parentNavItem.querySelector('.fa-chevron-down, .fa-chevron-right') : null;
 
     if (subnav && parentNavItem) {
-        const isOpen = subnav.classList.toggle('open');
-        subnav.style.maxHeight = isOpen ? subnav.scrollHeight + "px" : "0"; // Smooth transition
-        subnav.style.display = isOpen ? 'block' : 'none'; // Ensure block display when open
+        // console.log(`[toggleSubnav ${subnavId}] Current state: open=${subnav.classList.contains('open')}, parentActive=${parentNavItem.classList.contains('active')}`);
         
-        // Toggle parent nav item active state with the subnav
-        if(isOpen) {
-            parentNavItem.classList.add('active'); 
+        const isOpen = !subnav.classList.contains('open'); // Determine the NEW state
+
+        if (isOpen) {
+            // --- OPENING --- 
+            // 1. Ensure it's display: block so scrollHeight can be calculated
+            subnav.style.display = 'block'; 
+            
+            // 2. Add the class AFTER setting display block
+            subnav.classList.add('open');
+            
+            // 3. Set maxHeight using scrollHeight
+            //    Requesting animation frame might help ensure calculation is ready
+            requestAnimationFrame(() => {
+                 subnav.style.maxHeight = subnav.scrollHeight + "px";
+            });
+           
+            // console.log(`[toggleSubnav ${subnavId}] OPENING. Set display: block, maxHeight calculated to: ${subnav.scrollHeight}px (async)`);
+            parentNavItem.classList.add('active');
+
         } else {
-            // Remove active only if none of its children are the currently active section
-             const activeChild = subnav.querySelector('.nav-item.active');
-             if (!activeChild) {
+            // --- CLOSING --- 
+             // 1. Set maxHeight to 0 to trigger transition
+            subnav.style.maxHeight = "0";
+            
+             // 2. Remove the open class
+            subnav.classList.remove('open');
+            
+            // --- Logic to remove parent active state (unchanged from previous attempt) --- 
+            const currentActiveSection = document.querySelector('.section.active');
+            let isChildActive = false;
+            if (currentActiveSection) {
+                const activeChildNavItem = subnav.querySelector(`.nav-item[onclick*="toggleSection('${currentActiveSection.id}')"]`);
+                if (activeChildNavItem) {
+                    isChildActive = true;
+                }
+            }
+            // console.log(`[toggleSubnav ${subnavId}] Is a child section active within this subnav? ${isChildActive}`);
+            if (!isChildActive) {
+                 // console.log(`[toggleSubnav ${subnavId}] No active child section found. Removing .active from parent.`);
                  parentNavItem.classList.remove('active');
-             }
+            } else {
+                 // console.log(`[toggleSubnav ${subnavId}] Active child section found. Keeping parent .active.`);
+            }
+            // --- End of parent active state logic ---
         }
 
+        // --- Toggle icon (simplified) --- 
         if (icon) {
-             icon.classList.toggle('fa-chevron-down', !isOpen);
-             icon.classList.toggle('fa-chevron-right', isOpen);
-             icon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)'; // Rotate right arrow
+             icon.classList.toggle('fa-chevron-down', isOpen);
+             icon.classList.toggle('fa-chevron-right', !isOpen);
+            // Reset transform, let CSS handle rotation via classes if needed later
+             icon.style.transform = 'rotate(0deg)'; 
+            // console.log(`[toggleSubnav ${subnavId}] Updated icon classes: ${icon.className}`);
         }
+        // console.log(`[toggleSubnav ${subnavId}] Final state: open=${subnav.classList.contains('open')}, parentActive=${parentNavItem.classList.contains('active')}`);
+
     } else {
-        console.error(`Subnav with ID '${subnavId}' or its parent nav item not found.`);
+        // Error logging
     }
 }
 
@@ -193,103 +232,121 @@ function addSubnavTransitionCSS() {
     }
 }
 
+// Helper function to update icon based on current state and screen size
+function updateSidebarIcon() {
+    if (!sidebar || !toggleIcon) return;
+
+    const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+    const isMobile = window.innerWidth <= 768;
+
+    let isVisuallyHidden;
+    if (isMobile) {
+        // On mobile, hidden means NO 'sidebar-collapsed' class
+        isVisuallyHidden = !isCollapsed;
+    } else {
+        // On desktop, hidden means 'sidebar-collapsed' class IS present
+        isVisuallyHidden = isCollapsed;
+    }
+
+    // Set icon based on visual state
+    if (isVisuallyHidden) {
+        // Show hamburger when hidden
+        toggleIcon.classList.remove('fa-times');
+        toggleIcon.classList.add('fa-bars');
+    } else {
+        // Show cross when visible
+        toggleIcon.classList.remove('fa-bars');
+        toggleIcon.classList.add('fa-times');
+    }
+}
 
 // --- Sidebar Toggle ---
 
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleIcon = document.getElementById('toggle-icon');
-    
     if (!sidebar || !mainContent || !toggleIcon) {
-        console.warn("Sidebar elements not found.");
+        // console.warn("Sidebar elements not found."); // Removing log
         return;
     }
     
+    // Toggle the class that controls visibility
     sidebar.classList.toggle('sidebar-collapsed');
-    mainContent.classList.toggle('main-content-expanded');
     
-    if (sidebar.classList.contains('sidebar-collapsed')) {
-        toggleIcon.classList.remove('fa-bars');
-        toggleIcon.classList.add('fa-times');
-    } else {
-        toggleIcon.classList.remove('fa-times');
-        toggleIcon.classList.add('fa-bars');
+    // Toggle main content margin ONLY on desktop (mobile CSS handles it)
+    if (window.innerWidth > 768) {
+        mainContent.classList.toggle('main-content-expanded');
     }
     
-    // Fermer la barre latérale lorsqu'un élément est cliqué sur mobile
-    if (window.innerWidth <= 768) {
-        const navItems = sidebar.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Ne ferme pas si c'est un clic sur un sous-menu
-                if (!item.getAttribute('onclick') || !item.getAttribute('onclick').includes('toggleSubnav')) {
-                    setTimeout(() => {
-                        toggleSidebar();
-                    }, 300); // Petit délai pour permettre la navigation
-                }
-            });
-        });
-    }
+    // Update the icon based on the new state
+    updateSidebarIcon();
 }
 
 function setupSidebarToggle() {
     const toggleBtn = document.getElementById('toggle-btn');
     if (toggleBtn) {
-        toggleBtn.addEventListener('click', toggleSidebar);
-        
-        // Double-tap pour éviter les clics accidentels sur mobile
-        let lastTap = 0;
-        toggleBtn.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            
-            if (tapLength < 500 && tapLength > 0) {
-                toggleSidebar();
-                e.preventDefault();
-            }
-            lastTap = currentTime;
+        toggleBtn.addEventListener('click', () => {
+             toggleSidebar();
         });
+    } else {
+        // console.error("Toggle button (#toggle-btn) NOT found!"); // Removing log
     }
 }
 
 function checkSidebarState() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleIcon = document.getElementById('toggle-icon');
-    
     if (!sidebar || !mainContent || !toggleIcon) {
         return;
     }
     
-    if (window.innerWidth <= 768) {
-        // Sur mobile, la barre latérale est cachée par défaut
-        if (!sidebar.classList.contains('sidebar-collapsed')) {
-            sidebar.classList.add('sidebar-collapsed');
-            mainContent.classList.add('main-content-expanded');
-            toggleIcon.classList.remove('fa-bars');
-            toggleIcon.classList.add('fa-times');
-        }
+    const isMobile = window.innerWidth <= 768;
+    let shouldBeInitiallyHidden;
+
+    if (isMobile) {
+        shouldBeInitiallyHidden = true; // Mobile starts hidden
     } else {
-        // Sur desktop, la barre latérale est visible par défaut
-        if (sidebar.classList.contains('sidebar-collapsed') && !localStorage.getItem('sidebarCollapsed')) {
+        shouldBeInitiallyHidden = localStorage.getItem('sidebarCollapsed') === 'true'; 
+    }
+
+    // Set the correct class based on initial state
+    if (shouldBeInitiallyHidden) {
+        if (isMobile) {
+            // Hidden on mobile means REMOVING the class
             sidebar.classList.remove('sidebar-collapsed');
+        } else {
+            // Hidden on desktop means ADDING the class
+            sidebar.classList.add('sidebar-collapsed'); 
+             mainContent.classList.add('main-content-expanded');
+        }
+    } else { // Should be initially visible
+        if (isMobile) {
+             // Visible on mobile means ADDING the class
+            sidebar.classList.add('sidebar-collapsed');
+        } else {
+             // Visible on desktop means REMOVING the class
+            sidebar.classList.remove('sidebar-collapsed'); 
             mainContent.classList.remove('main-content-expanded');
-            toggleIcon.classList.remove('fa-times');
-            toggleIcon.classList.add('fa-bars');
         }
     }
     
-    // Ajout d'un écouteur pour fermer la barre latérale lors d'un clic en dehors sur mobile
-    if (window.innerWidth <= 768) {
-        document.body.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && 
-                !toggleBtn.contains(e.target) && 
-                !sidebar.classList.contains('sidebar-collapsed')) {
-                toggleSidebar();
-            }
-        });
+    // Ensure the body click listener is only added once or managed correctly
+    // Remove potentially existing listener before adding
+    document.body.removeEventListener('click', handleBodyClickForSidebar);
+    if (isMobile) {
+        document.body.addEventListener('click', handleBodyClickForSidebar);
     }
+}
+
+// Separate handler for body click to make removal easier if needed
+function handleBodyClickForSidebar(e) {
+     // console.log("[Body Click] Detected. Target:", e.target); // Removing log
+     const isOutside = !sidebar.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target)); // Ensure toggleBtn exists
+     const isVisibleMobile = sidebar && sidebar.classList.contains('sidebar-collapsed'); // Ensure sidebar exists
+     // console.log(`[Body Click] Is Outside: ${isOutside}, Is Visible (Mobile): ${isVisibleMobile}`); // Removing log
+
+     if (isOutside && isVisibleMobile) {
+         // console.log("[Body Click] Conditions met. Calling toggleSidebar() to CLOSE."); // Removing log
+         toggleSidebar();
+     } else {
+         // console.log("[Body Click] Conditions not met. No action."); // Removing log
+     }
 }
 
 // Fonctions supplémentaires pour l'expérience mobile
@@ -315,7 +372,7 @@ function escapeRegExp(string) {
 
 function searchContent() {
      if (!searchInput || !resultsContainer || !searchResultsContainer) {
-        console.warn("Search elements not found.");
+        // console.warn("Search elements not found."); // Removing log
         return;
      } 
 
@@ -432,7 +489,7 @@ function searchContent() {
                                 setTimeout(() => { match.element.style.transition = ''; }, 300);
                             }, 2000);
                          } else {
-                            console.warn("Target element for search result no longer exists or is not visible.");
+                            // console.warn("Target element for search result no longer exists or is not visible."); // Removing log
                          }
                     }, 200); // Increased Delay to allow section rendering
                 };
@@ -482,7 +539,7 @@ function setupQuizzes() {
 
         // Basic validation for essential elements
         if (!navigationDiv || !prevButton || !nextButton || !finishButton || !resultsDiv || !scoreSpan || !totalSpan || questions.length === 0 || questions.length !== optionsContainers.length || questions.length !== feedbacks.length) {
-            console.error(`Quiz structure invalid in container ${quizIndex}. Skipping setup.`, quizContainer);
+            // console.error(`Quiz structure invalid in container ${quizIndex}. Skipping setup.`, quizContainer); // Removing log
             // Optionally hide the broken quiz container
             // quizContainer.style.display = 'none'; 
             return; 
@@ -650,7 +707,7 @@ function setupFlashcards() {
  
  function updateProgress() {
      if (!progressBarFill || !progressPercentage) {
-        // console.warn("Progress bar elements not found.");
+        // console.warn("Progress bar elements not found."); // Removing log
         return; // Silently return if elements aren't there
      }
     if (totalSections === 0) {
@@ -668,8 +725,8 @@ function setupFlashcards() {
 
     progressBarFill.style.width = `${percentage}%`;
     progressPercentage.textContent = `${percentage}%`;
-     // console.log("Viewed sections (tracked):", actualViewed);
-     // console.log("Progress:", percentage);
+     // console.log("Viewed sections (tracked):", actualViewed); // Removing log
+     // console.log("Progress:", percentage); // Removing log
 }
 
 // --- Quick Revision Mode (Placeholder) ---
@@ -687,7 +744,7 @@ function setupFlashcards() {
 document.addEventListener('DOMContentLoaded', () => {
     // Check for essential elements before proceeding
     if (!document.body || !document.head) {
-        console.error("DOM not fully loaded or basic elements missing.");
+        // console.error("DOM not fully loaded or basic elements missing."); // Removing log
         return;
     }
 
@@ -725,7 +782,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateProgress(); // Update progress after potential section view
     
-    checkSidebarState(); // Set initial sidebar state based on viewport
+    checkSidebarState(); // Set initial sidebar class state
+    updateSidebarIcon(); // Set initial icon state *after* checkSidebarState
 
     // Open the subnav containing the initially active section, if any
     const activeNavItem = document.querySelector('.nav-item.active');
@@ -1141,7 +1199,7 @@ function setupQuizHub() {
         !currentQuestion || !totalQuestions || !quizHubScore || !progressBar || 
         !restartQuizBtn || !reviewAnswersBtn || !quizReview || !reviewContainer || 
         !backToResultsBtn) {
-        console.warn("Quiz hub elements not found. Skipping setup.");
+        // console.warn("Quiz hub elements not found. Skipping setup."); // Removing log
         return;
     }
     
@@ -1468,7 +1526,7 @@ function setupFlashcardsHub() {
     const totalFlashcardsEl = document.getElementById('total-flashcards');
     
     if (!flashcardsContainer || !categoryFilter || !shuffleBtn || !prevBtn || !nextBtn || !currentFlashcardEl || !totalFlashcardsEl) {
-        console.warn("Flashcards hub elements not found. Skipping setup.");
+        // console.warn("Flashcards hub elements not found. Skipping setup."); // Removing log
         return;
     }
     
@@ -1646,4 +1704,7 @@ function setupFlashcardsHub() {
 setupQuizHub();
 setupFlashcardsHub();
 
-window.addEventListener('resize', checkSidebarState); // Re-check sidebar on resize 
+window.addEventListener('resize', () => {
+    checkSidebarState();
+    updateSidebarIcon(); // Also update icon on resize
+}); 

@@ -62,19 +62,26 @@ body {
 }
 
 .toggle-btn {
-    position: absolute;
+    position: fixed;
     top: 15px;
-    right: 10px;
+    right: 15px;
     cursor: pointer;
-    z-index: 101;
+    z-index: 1001;
     background-color: var(--primary);
     color: white;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.sidebar-collapsed + .toggle-btn {
+    /* Optional: Move button slightly when sidebar is closed */
+    /* transform: translateX(-250px); Example if you want it to move */
 }
 
 .main-content {
