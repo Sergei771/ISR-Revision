@@ -1163,6 +1163,633 @@ const quizQuestions = [
         correctAnswer: 1,
         explanation: "Le phishing est une technique d'ingénierie sociale où les attaquants se font passer pour des entités légitimes (banques, services en ligne) afin de manipuler les utilisateurs et les inciter à divulguer des informations sensibles comme les mots de passe ou coordonnées bancaires.",
         category: "securite"
+    },
+    {
+        question: "Quel rôle AD DS (Active Directory Domain Services) est responsable de la gestion des modifications de schéma pour toute la forêt ?",
+        options: ["Maître d'infrastructure", "Maître RID", "Maître de schéma", "Émulateur PDC"],
+        correctAnswer: 2,
+        explanation: "Le Maître de schéma est le seul contrôleur de domaine dans la forêt autorisé à traiter les mises à jour du schéma Active Directory.",
+        category: "active-directory"
+    },
+    {
+        question: "Quel type de relation de confiance est créé automatiquement entre un domaine parent et un domaine enfant dans une forêt AD ?",
+        options: ["Externe", "Forêt", "Raccourci", "Parent-Enfant (Transitive)"],
+        correctAnswer: 3,
+        explanation: "Une relation de confiance bidirectionnelle et transitive est automatiquement créée entre un domaine parent et un domaine enfant lors de la création de ce dernier.",
+        category: "active-directory"
+    },
+    {
+        question: "Qu'est-ce qu'un catalogue global (Global Catalog) dans Active Directory ?",
+        options: [
+            "Un index complet de tous les objets de son propre domaine", 
+            "Une copie complète de la base de données AD de tous les domaines", 
+            "Un index partiel en lecture seule de tous les objets de tous les domaines de la forêt", 
+            "Un serveur DNS spécifique à AD"
+        ],
+        correctAnswer: 2,
+        explanation: "Le catalogue global contient une réplique partielle en lecture seule de chaque objet de chaque domaine de la forêt, permettant des recherches rapides à l'échelle de la forêt et facilitant les ouvertures de session.",
+        category: "active-directory"
+    },
+    {
+        question: "Quel composant est essentiel pour l'installation d'AD CS (Active Directory Certificate Services) ?",
+        options: ["Un serveur Web (IIS)", "Un serveur DHCP", "Un serveur de fichiers", "Un serveur DNS"],
+        correctAnswer: 0,
+        explanation: "IIS (Internet Information Services) est requis pour héberger les services web d'inscription de certificats et la publication des listes de révocation (CRL).",
+        category: "pki" // Peut aussi être AD, mais focalisé sur CS install
+    },
+    {
+        question: "Quelle 'cipher suite' est généralement considérée comme la plus sécurisée parmi les suivantes pour TLS 1.2 ?",
+        options: [
+            "TLS_RSA_WITH_RC4_128_SHA", 
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", 
+            "TLS_RSA_WITH_3DES_EDE_CBC_SHA", 
+            "TLS_DH_anon_WITH_AES_128_CBC_SHA"
+        ],
+        correctAnswer: 1,
+        explanation: "Les suites utilisant ECDHE pour l'échange de clés (assurant la confidentialité persistante), RSA pour l'authentification, AES en mode GCM (chiffrement authentifié) avec des clés de 256 bits et SHA384 sont considérées comme très robustes pour TLS 1.2.",
+        category: "ssl-tls"
+    },
+    {
+        question: "Qu'est-ce que le 'Server Name Indication' (SNI) dans le contexte TLS ?",
+        options: [
+            "Une méthode pour vérifier le nom du serveur après la connexion", 
+            "Une extension TLS permettant au client d'indiquer le nom d'hôte auquel il tente de se connecter au début du handshake", 
+            "Un type de certificat spécifique pour les serveurs virtuels", 
+            "Un protocole pour synchroniser les noms de serveurs"
+        ],
+        correctAnswer: 1,
+        explanation: "SNI permet à un serveur d'héberger plusieurs certificats TLS pour différents noms d'hôte sur une seule adresse IP, car le client spécifie le nom d'hôte désiré lors du handshake.",
+        category: "ssl-tls"
+    },
+    {
+        question: "Quel modèle d'architecture réseau décrit la communication en 7 couches distinctes ?",
+        options: ["Modèle TCP/IP", "Modèle OSI", "Modèle Hybride", "Modèle de von Neumann"],
+        correctAnswer: 1,
+        explanation: "Le modèle OSI (Open Systems Interconnection) décompose la communication réseau en 7 couches : Physique, Liaison de données, Réseau, Transport, Session, Présentation, Application.",
+        category: "reseaux"
+    },
+    {
+        question: "Quelle est la principale différence entre un hub et un switch ?",
+        options: [
+            "Un hub fonctionne à la couche 3, un switch à la couche 2", 
+            "Un switch crée des domaines de collision séparés pour chaque port, un hub non", 
+            "Un hub est plus rapide qu'un switch", 
+            "Un switch utilise des adresses IP, un hub utilise des adresses MAC"
+        ],
+        correctAnswer: 1,
+        explanation: "Un hub répète simplement le signal reçu sur tous les ports (un seul domaine de collision), tandis qu'un switch apprend les adresses MAC connectées à chaque port et ne transfère les trames que vers le port concerné, créant des domaines de collision distincts.",
+        category: "reseaux"
+    },
+    {
+        question: "Quelle est la fonction principale d'un routeur ?",
+        options: [
+            "Connecter des appareils au sein d'un même réseau local", 
+            "Interconnecter différents réseaux et déterminer le meilleur chemin pour acheminer les paquets", 
+            "Attribuer des adresses IP aux appareils", 
+            "Filtrer le trafic en fonction des adresses MAC"
+        ],
+        correctAnswer: 1,
+        explanation: "Les routeurs opèrent à la couche 3 (Réseau) et utilisent les adresses IP pour prendre des décisions de routage et acheminer les paquets entre différents réseaux.",
+        category: "reseaux" // Ou 'routing'
+    },
+    {
+        question: "Quelle adresse IP est une adresse de boucle locale (loopback) ?",
+        options: ["192.168.1.1", "10.0.0.1", "172.16.0.1", "127.0.0.1"],
+        correctAnswer: 3,
+        explanation: "L'adresse 127.0.0.1 (et plus généralement le réseau 127.0.0.0/8) est réservée pour la boucle locale, permettant à une machine de communiquer avec elle-même à des fins de test.",
+        category: "protocoles" // Ou 'ip-addressing'
+    },
+    {
+        question: "Qu'est-ce que le CIDR (Classless Inter-Domain Routing) ?",
+        options: [
+            "Un ancien système d'adressage IP basé sur des classes (A, B, C)", 
+            "Une méthode pour représenter les masques de sous-réseau en utilisant une notation de préfixe (ex: /24)", 
+            "Un protocole de routage dynamique", 
+            "Un type d'adresse IPv6"
+        ],
+        correctAnswer: 1,
+        explanation: "CIDR permet une allocation plus flexible des adresses IP et une agrégation des routes en spécifiant la longueur du préfixe réseau (le nombre de bits à 1 dans le masque de sous-réseau) après l'adresse IP.",
+        category: "ip-addressing"
+    },
+    {
+        question: "Quel protocole de routage est un protocole 'à état de liens' (link-state) ?",
+        options: ["RIP", "EIGRP", "OSPF", "BGP (dans sa forme de base)"],
+        correctAnswer: 2,
+        explanation: "OSPF (Open Shortest Path First) est un protocole de routage interne (IGP) à état de liens. Chaque routeur construit une carte complète de la topologie du réseau pour calculer les meilleurs chemins.",
+        category: "routing"
+    },
+    {
+        question: "Quelle commande est utilisée sur un routeur Cisco pour entrer en mode de configuration globale ?",
+        options: ["enable", "configure terminal", "interface [type]/[num]", "show running-config"],
+        correctAnswer: 1,
+        explanation: "La commande `configure terminal` (souvent abrégée en `conf t`) permet de passer du mode d'exécution privilégié (après `enable`) au mode de configuration globale.",
+        category: "cisco-routers"
+    },
+    {
+        question: "Comment sauvegarder la configuration en cours ('running-config') dans la configuration de démarrage ('startup-config') sur un routeur Cisco ?",
+        options: ["copy running-config startup-config", "write memory", "save config", "Les deux premières options"],
+        correctAnswer: 3,
+        explanation: "Les commandes `copy running-config startup-config` et son alias plus ancien `write memory` permettent toutes deux de sauvegarder la configuration active pour qu'elle soit chargée au prochain démarrage du routeur.",
+        category: "cisco-routers"
+    },
+    {
+        question: "Quel port TCP est utilisé par défaut par le protocole HTTP ?",
+        options: ["21", "23", "80", "443"],
+        correctAnswer: 2,
+        explanation: "Le port TCP 80 est le port standard utilisé pour les communications HTTP non chiffrées.",
+        category: "protocoles"
+    },
+    {
+        question: "Quel port UDP est utilisé par défaut par le protocole DNS (pour les requêtes standard) ?",
+        options: ["53", "67", "123", "161"],
+        correctAnswer: 0,
+        explanation: "Le port UDP 53 est principalement utilisé pour les requêtes et réponses DNS standard. TCP 53 est utilisé pour les transferts de zone ou lorsque la réponse dépasse une certaine taille.",
+        category: "protocoles"
+    },
+    {
+        question: "Quel est l'objectif principal du processus DORA dans DHCP ?",
+        options: [
+            "Discover, Offer, Request, Acknowledge - Processus d'attribution d'adresse IP", 
+            "Domain, Organization, Router, Address - Structure d'information DHCP", 
+            "Data, Operation, Response, Action - Cycle de vie d'une requête DHCP", 
+            "Delete, Overwrite, Reassign, Authenticate - Gestion des baux expirés"
+        ],
+        correctAnswer: 0,
+        explanation: "DORA décrit les 4 étapes de l'attribution d'un bail DHCP : le client Découvre (Discover) les serveurs, un serveur Offre (Offer) une adresse, le client la Requiert (Request), et le serveur Confirme (Acknowledge).",
+        category: "dhcp" // Ou 'protocoles'
+    },
+    {
+        question: "Quelle édition de Windows Server est généralement utilisée pour les très grandes entreprises nécessitant une haute disponibilité et une grande scalabilité ?",
+        options: ["Windows Server Essentials", "Windows Server Standard", "Windows Server Datacenter", "Windows Storage Server"],
+        correctAnswer: 2,
+        explanation: "Windows Server Datacenter offre le plus grand nombre de fonctionnalités, notamment des droits de virtualisation illimités et des fonctionnalités avancées de stockage et de réseau, adaptées aux environnements exigeants.",
+        category: "windows-server"
+    },
+    {
+        question: "Quel outil graphique principal est utilisé pour gérer les rôles et fonctionnalités sur Windows Server ?",
+        options: ["Gestionnaire des tâches", "Panneau de configuration", "Gestionnaire de serveur (Server Manager)", "Éditeur de stratégie de groupe (gpedit.msc)"],
+        correctAnswer: 2,
+        explanation: "Le Gestionnaire de serveur est la console centrale pour installer, configurer et gérer les rôles (comme AD DS, DHCP, DNS, IIS) et les fonctionnalités de Windows Server.",
+        category: "windows-server"
+    },
+    {
+        question: "Quel est l'un des principaux objectifs du RGPD (Règlement Général sur la Protection des Données) ?",
+        options: [
+            "Standardiser les protocoles réseau en Europe", 
+            "Protéger les données personnelles des citoyens de l'UE et leur donner plus de contrôle sur leurs données", 
+            "Définir les normes de sécurité pour les transactions financières", 
+            "Réglementer l'utilisation des logiciels open-source"
+        ],
+        correctAnswer: 1,
+        explanation: "Le RGPD vise à harmoniser les lois sur la protection des données dans toute l'Europe, à renforcer les droits des individus concernant leurs données personnelles (droit d'accès, de rectification, d'effacement, etc.) et à imposer des obligations strictes aux organisations qui traitent ces données.",
+        category: "rgpd"
+    },
+    {
+        question: "Quel principe fondamental du RGPD stipule que les données collectées doivent être adéquates, pertinentes et limitées à ce qui est nécessaire au regard des finalités pour lesquelles elles sont traitées ?",
+        options: ["Licéité, loyauté et transparence", "Limitation des finalités", "Minimisation des données", "Exactitude"],
+        correctAnswer: 2,
+        explanation: "Le principe de minimisation des données exige que seules les données strictement nécessaires à l'objectif poursuivi soient collectées et traitées.",
+        category: "rgpd"
+    },
+    {
+        question: "Qu'est-ce qu'un IDS (Intrusion Detection System) ?",
+        options: [
+            "Un système qui bloque activement les attaques détectées", 
+            "Un système qui surveille le trafic réseau ou les journaux système à la recherche d'activités suspectes et génère des alertes", 
+            "Un type de pare-feu applicatif", 
+            "Un outil de chiffrement des communications"
+        ],
+        correctAnswer: 1,
+        explanation: "Un IDS détecte les intrusions potentielles ou les activités malveillantes mais ne les bloque pas directement (contrairement à un IPS - Intrusion Prevention System). Il alerte les administrateurs.",
+        category: "securite"
+    },
+    {
+        question: "Quelle est la différence entre RPO (Recovery Point Objective) et RTO (Recovery Time Objective) dans un PCA ?",
+        options: [
+            "RPO est le temps pour récupérer, RTO est la quantité de données perdues", 
+            "RPO est la quantité maximale de perte de données acceptable, RTO est le délai maximal pour restaurer les services", 
+            "RPO concerne les sauvegardes, RTO concerne la réplication", 
+            "Il n'y a pas de différence significative"
+        ],
+        correctAnswer: 1,
+        explanation: "RPO définit la quantité de données qu'une entreprise peut se permettre de perdre (mesurée en temps depuis la dernière sauvegarde utilisable). RTO définit le temps maximum acceptable pour qu'un système ou service soit de nouveau opérationnel après une interruption.",
+        category: "continuite"
+    },
+    {
+        question: "Qu'est-ce qu'un 'Single Point of Failure' (SPOF) ?",
+        options: [
+            "Un protocole réseau spécifique", 
+            "Un composant d'un système dont la défaillance entraînerait l'arrêt complet du système", 
+            "Une méthode de cryptage", 
+            "Un utilisateur ayant des privilèges excessifs"
+        ],
+        correctAnswer: 1,
+        explanation: "Un SPOF est un élément (matériel, logiciel, processus) critique qui, en cas de panne, compromet la disponibilité de l'ensemble du service ou système. La redondance vise à éliminer les SPOF.",
+        category: "continuite" // Ou 'reseaux' ou 'securite'
+    },
+    // ----- DEUXIÈME SÉRIE DE NOUVELLES QUESTIONS -----
+    {
+        question: "Quel mécanisme AD permet de déléguer l'administration de certaines parties de l'annuaire sans accorder de droits étendus ?",
+        options: ["Relations de confiance", "Unités d'Organisation (OU)", "Sites AD", "Stratégies de groupe (GPO)"],
+        correctAnswer: 1,
+        explanation: "Les Unités d'Organisation permettent de structurer l'annuaire et de déléguer des permissions spécifiques sur les objets contenus dans une OU à des groupes ou utilisateurs désignés.",
+        category: "active-directory"
+    },
+    {
+        question: "Qu'est-ce que le KDC (Key Distribution Center) dans un environnement Kerberos (utilisé par AD) ?",
+        options: [
+            "Un serveur qui stocke les clés privées des utilisateurs", 
+            "Un service, généralement sur un contrôleur de domaine, qui émet des tickets d'authentification (TGT et tickets de service)", 
+            "Un protocole de chiffrement symétrique", 
+            "Une autorité de certification pour Kerberos"
+        ],
+        correctAnswer: 1,
+        explanation: "Le KDC est un composant central de Kerberos, responsable de l'authentification des utilisateurs et de l'émission des tickets qui leur permettent d'accéder aux ressources réseau de manière sécurisée.",
+        category: "active-directory"
+    },
+    {
+        question: "Quel est le rôle d'une CRL (Certificate Revocation List) dans une infrastructure PKI ?",
+        options: [
+            "Lister tous les certificats valides émis par une CA", 
+            "Fournir une méthode pour renouveler les certificats expirés", 
+            "Publier une liste des certificats qui ont été révoqués avant leur date d'expiration prévue", 
+            "Archiver les anciens certificats"
+        ],
+        correctAnswer: 2,
+        explanation: "Une CRL est une liste signée numériquement par une CA qui contient les numéros de série des certificats qu'elle a émis mais qui ne sont plus valides (par exemple, en cas de compromission de la clé privée).",
+        category: "pki"
+    },
+    {
+        question: "Quelle est la différence fondamentale entre le chiffrement symétrique et asymétrique ?",
+        options: [
+            "Symétrique utilise des clés plus longues", 
+            "Asymétrique est plus rapide que symétrique", 
+            "Symétrique utilise la même clé pour chiffrer et déchiffrer, tandis qu'asymétrique utilise une paire de clés (publique/privée)", 
+            "Seul l'asymétrique est utilisé dans TLS"
+        ],
+        correctAnswer: 2,
+        explanation: "Le chiffrement symétrique (ex: AES) utilise une clé secrète partagée. Le chiffrement asymétrique (ex: RSA) utilise une clé publique pour chiffrer (ou vérifier une signature) et une clé privée correspondante pour déchiffrer (ou signer). TLS utilise les deux.",
+        category: "pki" // Ou 'ssl-tls', concept fondamental
+    },
+    {
+        question: "Qu'est-ce que le HSTS (HTTP Strict Transport Security) ?",
+        options: [
+            "Un nouveau protocole remplaçant HTTPS", 
+            "Un en-tête de réponse HTTP qui indique au navigateur qu'il ne doit communiquer avec le site qu'en utilisant HTTPS", 
+            "Une méthode de compression pour accélérer HTTPS", 
+            "Un certificat TLS spécial"
+        ],
+        correctAnswer: 1,
+        explanation: "HSTS est un mécanisme de sécurité qui permet à un serveur web d'indiquer aux navigateurs que toutes les futures connexions vers ce domaine doivent être faites via HTTPS, protégeant contre les attaques de type SSL stripping.",
+        category: "ssl-tls"
+    },
+    {
+        question: "Quel protocole est utilisé pour la résolution des adresses MAC à partir des adresses IP dans un réseau local IPv4 ?",
+        options: ["DHCP", "DNS", "ARP", "RARP"],
+        correctAnswer: 2,
+        explanation: "ARP (Address Resolution Protocol) est utilisé pour mapper une adresse IP connue à l'adresse MAC physique correspondante sur un segment de réseau local.",
+        category: "protocoles"
+    },
+    {
+        question: "Qu'est-ce que le NAT (Network Address Translation) ?",
+        options: [
+            "Une méthode pour chiffrer le trafic IP", 
+            "Un processus permettant de modifier les informations d'adresse IP dans les en-têtes de paquets pour mapper un espace d'adressage (ex: privé) à un autre (ex: public)", 
+            "Un protocole de routage dynamique", 
+            "Un mécanisme d'authentification réseau"
+        ],
+        correctAnswer: 1,
+        explanation: "Le NAT est couramment utilisé sur les routeurs pour permettre à plusieurs appareils utilisant des adresses IP privées de partager une seule adresse IP publique pour accéder à Internet.",
+        category: "reseaux" // Ou 'ip-addressing'
+    },
+    {
+        question: "Quelle technologie permet de transporter plusieurs VLANs sur un seul lien physique entre des switchs ?",
+        options: ["Spanning Tree Protocol (STP)", "Trunking (ex: IEEE 802.1Q)", "EtherChannel", "HSRP/VRRP"],
+        correctAnswer: 1,
+        explanation: "Le trunking, notamment avec le standard IEEE 802.1Q, permet de faire passer le trafic de plusieurs VLANs sur un même lien en ajoutant une étiquette (tag) aux trames pour identifier leur VLAN d'origine.",
+        category: "reseaux"
+    },
+    {
+        question: "Quel est le but principal du Spanning Tree Protocol (STP) dans un réseau commuté ?",
+        options: [
+            "Agréger plusieurs liens physiques en un seul lien logique", 
+            "Sélectionner le chemin le plus rapide entre deux switchs", 
+            "Prévenir les boucles de commutation en bloquant certains ports redondants", 
+            "Segmenter le réseau en VLANs"
+        ],
+        correctAnswer: 2,
+        explanation: "STP empêche les boucles de diffusion qui peuvent paralyser un réseau en créant une topologie logique sans boucle, en désactivant sélectivement les liaisons redondantes.",
+        category: "reseaux"
+    },
+    {
+        question: "Quelle plage d'adresses IP privées est définie par la RFC 1918 pour la classe B ?",
+        options: ["10.0.0.0 à 10.255.255.255", "192.168.0.0 à 192.168.255.255", "172.16.0.0 à 172.31.255.255", "169.254.0.0 à 169.254.255.255"],
+        correctAnswer: 2,
+        explanation: "La plage d'adresses privées de classe B définie par la RFC 1918 va de 172.16.0.0 à 172.31.255.255.",
+        category: "ip-addressing"
+    },
+    {
+        question: "Qu'est-ce qu'une route par défaut (default route) ?",
+        options: [
+            "La route la plus rapide vers une destination", 
+            "Une route utilisée par un routeur lorsqu'aucune autre route plus spécifique ne correspond à l'adresse IP de destination", 
+            "Une route statique vers un réseau interne", 
+            "Une route apprise via OSPF"
+        ],
+        correctAnswer: 1,
+        explanation: "La route par défaut (souvent 0.0.0.0/0 pour IPv4) indique au routeur où envoyer les paquets dont la destination n'est pas explicitement connue dans sa table de routage, typiquement vers le prochain routeur en direction d'Internet.",
+        category: "routing"
+    },
+    {
+        question: "Quelle commande Cisco IOS permet d'afficher la table de routage IP ?",
+        options: ["show interfaces", "show ip arp", "show ip route", "show version"],
+        correctAnswer: 2,
+        explanation: "La commande `show ip route` affiche la table de routage complète du routeur, y compris les routes connectées directement, les routes statiques et les routes apprises dynamiquement.",
+        category: "cisco-routers"
+    },
+    {
+        question: "Quel mécanisme assure qu'un seul serveur DHCP sur un sous-réseau répond à une requête DHCP Discover si plusieurs sont présents (pour la redondance) ?",
+        options: ["Le client choisit le premier qui répond", "Les serveurs se coordonnent via un protocole dédié", "Le concept de 'DHCP Failover' ou la configuration de délais différents sur les serveurs", "Ce n'est pas possible, un seul serveur DHCP doit être actif par sous-réseau"],
+        correctAnswer: 2,
+        explanation: "Des mécanismes comme le DHCP Failover (RFC non standard mais implémenté par Microsoft et ISC) ou la configuration de délais de réponse différents sur les serveurs permettent d'assurer la continuité du service sans conflits.",
+        category: "dhcp"
+    },
+    {
+        question: "Quelle fonctionnalité de Windows Server permet de gérer de manière centralisée la configuration et les paramètres de sécurité pour les utilisateurs et les ordinateurs d'un domaine AD ?",
+        options: ["Gestionnaire de serveur", "Observateur d'événements", "Stratégies de groupe (Group Policies - GPO)", "Services de certificats Active Directory (AD CS)"],
+        correctAnswer: 2,
+        explanation: "Les stratégies de groupe (GPO) sont un outil puissant pour appliquer des configurations (logiciels, scripts, paramètres Windows, sécurité) de manière cohérente à des ensembles d'utilisateurs et d'ordinateurs définis dans les OU.",
+        category: "windows-server" // Ou 'active-directory'
+    },
+    {
+        question: "Qu'est-ce qu'un serveur 'Core' dans le contexte de Windows Server ?",
+        options: [
+            "Une édition spéciale pour les clusters", 
+            "Une option d'installation minimale sans interface graphique utilisateur (GUI) complète", 
+            "Le contrôleur de domaine principal", 
+            "Un serveur dédié uniquement aux services essentiels comme DNS et DHCP"
+        ],
+        correctAnswer: 1,
+        explanation: "L'installation Server Core réduit la surface d'attaque et les besoins en ressources en omettant l'interface graphique standard. La gestion se fait principalement via ligne de commande (PowerShell, CMD) ou à distance.",
+        category: "windows-server"
+    },
+    {
+        question: "Selon le RGPD, qu'est-ce qu'une 'violation de données personnelles' ?",
+        options: [
+            "Uniquement le piratage d'une base de données", 
+            "Toute violation de la sécurité entraînant, de manière accidentelle ou illicite, la destruction, la perte, l'altération, la divulgation non autorisée de données personnelles ou l'accès non autorisé à de telles données", 
+            "L'envoi d'un email au mauvais destinataire", 
+            "Le non-respect d'une demande de droit d'accès"
+        ],
+        correctAnswer: 1,
+        explanation: "La définition est large et couvre divers incidents de sécurité affectant la confidentialité, l'intégrité ou la disponibilité des données personnelles. Certaines violations doivent être notifiées à l'autorité de contrôle (ex: CNIL) et parfois aux personnes concernées.",
+        category: "rgpd"
+    },
+    {
+        question: "Qu'est-ce qu'un VPN (Virtual Private Network) ?",
+        options: [
+            "Un réseau local sans fil", 
+            "Une connexion directe et dédiée entre deux sites", 
+            "Une technologie qui crée une connexion sécurisée et chiffrée sur un réseau public (comme Internet)", 
+            "Un type de pare-feu avancé"
+        ],
+        correctAnswer: 2,
+        explanation: "Un VPN permet d'étendre un réseau privé sur un réseau public en créant un tunnel chiffré, assurant la confidentialité et l'intégrité des données échangées comme si les appareils étaient connectés sur le même réseau local.",
+        category: "securite"
+    },
+    {
+        question: "Quelle technique de sécurité implique de segmenter un réseau en plusieurs zones isolées pour limiter l'impact d'une compromission ?",
+        options: ["Chiffrement", "Authentification forte", "Segmentation réseau (utilisation de VLANs, pare-feux internes)", "Mise à jour des systèmes"],
+        correctAnswer: 2,
+        explanation: "La segmentation réseau vise à contenir les menaces. Si une zone est compromise, les autres zones restent protégées grâce à des contrôles d'accès stricts (souvent via des pare-feux) entre les segments.",
+        category: "securite"
+    },
+    {
+        question: "Dans le cadre d'un PCA, qu'est-ce qu'un 'site de secours chaud' (hot site) ?",
+        options: [
+            "Un site vide avec l'infrastructure de base (électricité, réseau)", 
+            "Un site entièrement équipé avec matériel, logiciels et données récentes, prêt à prendre le relais quasi immédiatement", 
+            "Un accord avec un fournisseur pour obtenir du matériel en cas de sinistre", 
+            "Une sauvegarde externalisée des données"
+        ],
+        correctAnswer: 1,
+        explanation: "Un site chaud est une solution de reprise après sinistre coûteuse mais rapide, offrant une réplique quasi temps réel de l'environnement de production principal, permettant un RTO très faible.",
+        category: "continuite"
+    },
+    {
+        question: "Quel utilitaire en ligne de commande est couramment utilisé pour tester la connectivité de base entre deux hôtes IP et mesurer le temps de réponse ?",
+        options: ["ipconfig / ifconfig", "tracert / traceroute", "netstat", "ping"],
+        correctAnswer: 3,
+        explanation: "La commande `ping` envoie des paquets ICMP Echo Request à une destination et attend les réponses (Echo Reply) pour vérifier si l'hôte est joignable et estimer la latence.",
+        category: "network-failures" // Outil de diagnostic
+    },
+    // ----- TROISIÈME SÉRIE DE NOUVELLES QUESTIONS -----
+    {
+        question: "Dans Active Directory, quel est le rôle principal des Sites ?",
+        options: [
+            "Organiser les utilisateurs et ordinateurs pour la délégation", 
+            "Contrôler la réplication du trafic AD et localiser les services les plus proches", 
+            "Définir les limites des forêts et des domaines", 
+            "Appliquer des stratégies de groupe spécifiques"
+        ],
+        correctAnswer: 1,
+        explanation: "Les Sites AD représentent la topologie physique du réseau (généralement des emplacements géographiques connectés par des liens WAN) pour optimiser la réplication de l'annuaire et permettre aux clients de trouver les contrôleurs de domaine et services (comme le Catalogue Global) les plus proches.",
+        category: "active-directory"
+    },
+    {
+        question: "Quel protocole est utilisé par les contrôleurs de domaine AD pour répliquer les informations de l'annuaire entre eux ?",
+        options: ["LDAP", "Kerberos", "RPC (Remote Procedure Call) et/ou SMTP (pour la réplication inter-sites)", "SMB"],
+        correctAnswer: 2,
+        explanation: "La réplication intra-site utilise principalement RPC. La réplication inter-sites peut être configurée pour utiliser RPC (IP) ou SMTP (bien que moins courant et avec plus de limitations), souvent compressée pour économiser la bande passante.",
+        category: "active-directory"
+    },
+    {
+        question: "Quelle est la signification de l'ordre d'application des GPO : LSDOU ?",
+        options: [
+            "Local, Site, Domain, OU (l'emporte le dernier appliqué, donc OU)", 
+            "Least Significant, Domain, Organization, User", 
+            "Link, Security, Domain, OU", 
+            "Local, System, Directory, User"
+        ],
+        correctAnswer: 0,
+        explanation: "Les stratégies de groupe sont appliquées dans l'ordre : Ordinateur Local, puis celles liées au Site, puis au Domaine, puis aux Unités d'Organisation (de la plus haute à la plus basse dans la hiérarchie). Les paramètres appliqués en dernier (OU) prévalent en cas de conflit, sauf si l'héritage est bloqué ou la GPO est marquée comme 'Enforced'.",
+        category: "active-directory"
+    },
+    {
+        question: "Qu'est-ce qu'un modèle de certificat (Certificate Template) dans AD CS ?",
+        options: [
+            "Un certificat utilisé comme modèle pour tous les autres", 
+            "Une configuration prédéfinie qui définit les propriétés et les autorisations pour les certificats qui seront émis", 
+            "Un type de CA intermédiaire", 
+            "Le fichier de clé privée du certificat"
+        ],
+        correctAnswer: 1,
+        explanation: "Les modèles de certificats simplifient l'administration en définissant les paramètres (durée de validité, usages de clé, taille de clé, etc.) et qui peut demander quel type de certificat (ex: Utilisateur, Ordinateur, Serveur Web).",
+        category: "pki"
+    },
+    {
+        question: "Qu'est-ce que le 'Perfect Forward Secrecy' (PFS) dans TLS ?",
+        options: [
+            "Garantir que le serveur est toujours le bon", 
+            "Une propriété des protocoles d'échange de clés qui assure que la compromission de la clé privée à long terme du serveur ne compromet pas les clés de session passées", 
+            "Utiliser uniquement des algorithmes de chiffrement parfaits", 
+            "Une méthode pour vérifier l'intégrité des messages"
+        ],
+        correctAnswer: 1,
+        explanation: "PFS est généralement obtenu en utilisant des algorithmes d'échange de clés éphémères comme ECDHE ou DHE. Même si la clé privée du serveur est volée plus tard, un attaquant ne peut pas déchiffrer les communications passées enregistrées car les clés de session étaient dérivées de clés temporaires uniques.",
+        category: "ssl-tls"
+    },
+    {
+        question: "Quel est le but de l'en-tête 'Content Security Policy' (CSP) en sécurité web ?",
+        options: [
+            "Chiffrer le contenu de la page", 
+            "Définir les politiques de mots de passe pour les utilisateurs", 
+            "Permettre au serveur de spécifier les domaines autorisés d'où le navigateur peut charger des ressources (scripts, styles, images...)", 
+            "Compesser le contenu pour accélérer le chargement"
+        ],
+        correctAnswer: 2,
+        explanation: "CSP est une couche de sécurité supplémentaire pour atténuer certains types d'attaques, notamment le Cross-Site Scripting (XSS) et l'injection de données, en indiquant au navigateur les sources de contenu approuvées.",
+        category: "securite"
+    },
+    {
+        question: "Quelle adresse IPv6 représente l'adresse non spécifiée (équivalent de 0.0.0.0 en IPv4) ?",
+        options: ["::1", "fe80::/10", "ff00::/8", "::"],
+        correctAnswer: 3,
+        explanation: "L'adresse `::` (tous les bits à 0) est l'adresse non spécifiée, utilisée par exemple comme adresse source lorsqu'un hôte n'a pas encore d'adresse configurée (ex: DHCPv6). `::1` est l'adresse de loopback.",
+        category: "ip-addressing"
+    },
+    {
+        question: "Quel protocole remplace ARP dans IPv6 pour la résolution d'adresses de couche liaison ?",
+        options: ["DHCPv6", "ICMPv6 (avec Neighbor Discovery Protocol - NDP)", "DNSv6", "RARPv6"],
+        correctAnswer: 1,
+        explanation: "Le Neighbor Discovery Protocol (NDP), qui fait partie d'ICMPv6, gère plusieurs fonctions dont la résolution d'adresses (équivalent ARP), la découverte de routeurs, et la configuration automatique d'adresses (SLAAC).",
+        category: "protocoles"
+    },
+    {
+        question: "Qu'est-ce qu'une adresse IPv6 link-local ?",
+        options: [
+            "Une adresse routable globalement sur Internet", 
+            "Une adresse utilisée uniquement pour la communication sur le segment de réseau local physique directement connecté", 
+            "Une adresse privée unique au sein d'une organisation", 
+            "Une adresse de multicast"
+        ],
+        correctAnswer: 1,
+        explanation: "Les adresses link-local (préfixe fe80::/10) sont automatiquement configurées sur chaque interface IPv6 activée et sont nécessaires au fonctionnement de NDP. Elles ne sont pas routables au-delà du lien local.",
+        category: "ip-addressing"
+    },
+    {
+        question: "Dans OSPF, qu'est-ce qu'une 'Area' (zone) ?",
+        options: [
+            "Un groupe de routeurs partageant la même adresse IP", 
+            "Une collection de réseaux et de routeurs regroupés logiquement pour réduire la taille de la base de données link-state et limiter la portée des mises à jour de routage", 
+            "Un type spécifique de routeur OSPF", 
+            "Une métrique de coût OSPF"
+        ],
+        correctAnswer: 1,
+        explanation: "La division d'un grand domaine OSPF en zones (avec une zone backbone obligatoire, Area 0) améliore la scalabilité en limitant les calculs SPF et la propagation des informations de topologie à l'intérieur de chaque zone.",
+        category: "routing"
+    },
+    {
+        question: "Quel protocole est utilisé pour envoyer des emails depuis un client (ex: Outlook) vers un serveur de messagerie, ou entre serveurs de messagerie ?",
+        options: ["POP3", "IMAP", "SMTP", "HTTP"],
+        correctAnswer: 2,
+        explanation: "SMTP (Simple Mail Transfer Protocol) est le protocole standard pour l'envoi (soumission et relais) d'emails. POP3 et IMAP sont utilisés par les clients pour récupérer les emails depuis le serveur.",
+        category: "protocoles"
+    },
+    {
+        question: "Quelle est la principale différence entre POP3 et IMAP pour la récupération d'emails ?",
+        options: [
+            "POP3 est plus sécurisé qu'IMAP", 
+            "IMAP est plus ancien que POP3", 
+            "POP3 télécharge (et supprime souvent) les emails du serveur, tandis qu'IMAP synchronise les emails et dossiers avec le serveur, permettant un accès depuis plusieurs appareils", 
+            "POP3 utilise TCP, IMAP utilise UDP"
+        ],
+        correctAnswer: 2,
+        explanation: "IMAP (Internet Message Access Protocol) est plus flexible que POP3 (Post Office Protocol 3) car il laisse les messages sur le serveur et synchronise l'état (lu/non lu, dossiers), ce qui est idéal pour un accès multi-appareils.",
+        category: "protocoles"
+    },
+    {
+        question: "Quel service Windows Server permet de déployer et gérer de manière centralisée les mises à jour Microsoft pour les ordinateurs d'un réseau ?",
+        options: ["AD CS", "DFS", "WSUS", "Hyper-V"],
+        correctAnswer: 2,
+        explanation: "WSUS (Windows Server Update Services) permet aux administrateurs d'approuver et de distribuer les mises à jour Microsoft (Windows, Office, etc.) aux clients et serveurs internes, économisant la bande passante Internet et offrant plus de contrôle.",
+        category: "windows-server"
+    },
+    {
+        question: "Qu'est-ce que DFS (Distributed File System) dans Windows Server ?",
+        options: [
+            "Un système de fichiers spécifique pour les disques durs", 
+            "Une technologie permettant de regrouper des partages de fichiers situés sur différents serveurs en un ou plusieurs espaces de noms logiques et de répliquer les données entre serveurs", 
+            "Un protocole de sauvegarde réseau", 
+            "Un outil de gestion des quotas de disque"
+        ],
+        correctAnswer: 1,
+        explanation: "DFS simplifie l'accès aux ressources partagées pour les utilisateurs (via un espace de noms unifié) et peut améliorer la disponibilité et la répartition de charge grâce à la réplication (DFS-R).",
+        category: "windows-server"
+    },
+    {
+        question: "Quelle commande PowerShell permet d'obtenir de l'aide sur une autre commande (cmdlet) ?",
+        options: ["Help-Command", "Get-Help", "Show-Help", "Info-Command"],
+        correctAnswer: 1,
+        explanation: "La cmdlet `Get-Help` est l'outil principal pour obtenir des informations sur l'utilisation d'autres cmdlets, y compris leur syntaxe, paramètres, et des exemples. Par exemple : `Get-Help Get-Process`.",
+        category: "windows-server"
+    },
+    {
+        question: "Quel type d'attaque consiste à injecter du code malveillant (souvent JavaScript) dans un site web pour qu'il s'exécute dans le navigateur d'autres utilisateurs ?",
+        options: ["SQL Injection", "Cross-Site Scripting (XSS)", "DDoS", "Phishing"],
+        correctAnswer: 1,
+        explanation: "Le XSS exploite une vulnérabilité d'un site web qui ne valide ou n'échappe pas correctement les entrées utilisateur, permettant à un attaquant d'exécuter des scripts côté client pour voler des sessions, défigurer le site, ou rediriger les utilisateurs.",
+        category: "securite"
+    },
+    {
+        question: "Qu'est-ce qu'un WAF (Web Application Firewall) ?",
+        options: [
+            "Un pare-feu standard filtrant par ports et IP", 
+            "Un pare-feu spécifiquement conçu pour protéger les applications web en filtrant et surveillant le trafic HTTP/S entre un client et un serveur web", 
+            "Un système de détection d'intrusion réseau", 
+            "Un type de VPN"
+        ],
+        correctAnswer: 1,
+        explanation: "Un WAF se place devant les serveurs web pour analyser le trafic applicatif et bloquer les requêtes malveillantes comme les injections SQL, XSS, et autres attaques visant les vulnérabilités des applications web, ce qu'un pare-feu réseau traditionnel ne fait généralement pas.",
+        category: "securite"
+    },
+    {
+        question: "Quel est le principe de 'moindre privilège' (Principle of Least Privilege) en sécurité ?",
+        options: [
+            "Donner à tous les utilisateurs les mêmes privilèges minimaux", 
+            "Accorder aux utilisateurs et processus uniquement les permissions strictement nécessaires pour accomplir leurs tâches légitimes, et rien de plus", 
+            "Utiliser le moins de logiciels possible sur un système", 
+            "Limiter le nombre de connexions réseau"
+        ],
+        correctAnswer: 1,
+        explanation: "Ce principe fondamental de sécurité vise à limiter les dommages potentiels en cas de compromission d'un compte ou d'une erreur. Si un compte n'a que les droits nécessaires, un attaquant qui le contrôle aura un impact limité.",
+        category: "securite"
+    },
+    {
+        question: "Quelle est la différence principale entre une sauvegarde incrémentielle et une sauvegarde différentielle ?",
+        options: [
+            "Incrémentielle sauvegarde tout, différentielle seulement les changements", 
+            "Différentielle est plus rapide à sauvegarder", 
+            "Incrémentielle sauvegarde les fichiers modifiés depuis la DERNIÈRE sauvegarde (quelle qu'elle soit), différentielle sauvegarde les fichiers modifiés depuis la DERNIÈRE sauvegarde COMPLÈTE", 
+            "Incrémentielle nécessite plus d'espace de stockage"
+        ],
+        correctAnswer: 2,
+        explanation: "Sauvegarde Incrémentielle : rapide, faible espace, mais restauration plus longue (dernière complète + toutes les incrémentielles). Sauvegarde Différentielle : plus longue et plus gourmande en espace que l'incrémentielle au fil du temps, mais restauration plus rapide (dernière complète + dernière différentielle).",
+        category: "continuite"
+    },
+    {
+        question: "Quel niveau RAID offre une redondance par parité distribuée sur plusieurs disques, permettant la défaillance d'un disque sans perte de données ?",
+        options: ["RAID 0", "RAID 1", "RAID 5", "RAID 10"],
+        correctAnswer: 2,
+        explanation: "RAID 5 utilise le striping avec parité distribuée. Il nécessite au moins 3 disques. La parité permet de reconstruire les données d'un disque défaillant à partir des informations des autres disques. RAID 1 est la mise en miroir, RAID 0 est le striping sans redondance, RAID 10 combine striping et miroir.",
+        category: "continuite"
+    },
+    {
+        question: "Quelle commande est utilisée sur un switch Cisco pour assigner un port à un VLAN spécifique (en mode accès) ?",
+        options: ["interface vlan [vlan-id]", "switchport mode trunk", "switchport access vlan [vlan-id]", "spanning-tree portfast"],
+        correctAnswer: 2,
+        explanation: "Après être entré dans la configuration de l'interface (ex: `interface FastEthernet0/1`), la commande `switchport mode access` définit le port comme port d'accès, et `switchport access vlan [vlan-id]` l'assigne au VLAN spécifié.",
+        category: "cisco-routers" // Applicable aux switchs Cisco
     }
 ];
 
@@ -1269,15 +1896,28 @@ function setupQuizHub() {
         quizOptions.innerHTML = '';
         quizExplanation.classList.add('hidden');
         
-        // Add new options
-        question.options.forEach((option, index) => {
+        // --- NEW: Shuffle options ---
+        // 1. Create array of options with their original index
+        const optionsWithIndices = question.options.map((text, index) => ({ 
+            text: text, 
+            originalIndex: index 
+        }));
+        
+        // 2. Shuffle this array
+        const shuffledOptions = shuffleArray(optionsWithIndices);
+        // --- End NEW ---
+
+        // Add new options (iterate through shuffled options)
+        shuffledOptions.forEach(optionData => {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'quiz-option p-4 bg-darker rounded-lg cursor-pointer hover:bg-primary hover:text-white transition-colors';
-            optionDiv.textContent = option;
-            optionDiv.dataset.index = index;
+            optionDiv.textContent = optionData.text; // Use text from shuffled object
+            // Store the ORIGINAL index in the dataset
+            optionDiv.dataset.originalIndex = optionData.originalIndex; 
             
             optionDiv.addEventListener('click', function() {
-                selectOption(this, index);
+                // Pass the element itself to selectOption
+                selectOption(this); 
             });
             
             quizOptions.appendChild(optionDiv);
@@ -1287,9 +1927,12 @@ function setupQuizHub() {
         quizNextBtn.disabled = true;
     }
     
-    function selectOption(optionElement, optionIndex) {
+    function selectOption(optionElement) { // Receive the clicked element
+        // Get the original index from the dataset
+        const selectedOriginalIndex = parseInt(optionElement.dataset.originalIndex, 10); 
+        
         const question = currentQuizQuestions[currentQuestionIndex];
-        const isCorrect = optionIndex === question.correctAnswer;
+        const isCorrect = selectedOriginalIndex === question.correctAnswer;
         
         // Disable all options
         const allOptions = quizOptions.querySelectorAll('.quiz-option');
@@ -1305,8 +1948,13 @@ function setupQuizHub() {
         
         // Mark correct option if selected was wrong
         if (!isCorrect) {
-            allOptions[question.correctAnswer].classList.remove('bg-darker');
-            allOptions[question.correctAnswer].classList.add('bg-green-600', 'text-white');
+            // Find the element corresponding to the correct answer's original index
+            allOptions.forEach(opt => {
+                if (parseInt(opt.dataset.originalIndex, 10) === question.correctAnswer) {
+                    opt.classList.remove('bg-darker');
+                    opt.classList.add('bg-green-600', 'text-white');
+                }
+            });
         }
         
         // Show explanation
@@ -1320,10 +1968,10 @@ function setupQuizHub() {
             quizHubScore.textContent = score;
         }
         
-        // Record user's answer
+        // Record user's answer using the ORIGINAL index
         userAnswers.push({
             question: question.question,
-            userAnswerIndex: optionIndex,
+            userAnswerIndex: selectedOriginalIndex, // Store the original index of the chosen answer
             correctAnswerIndex: question.correctAnswer,
             isCorrect: isCorrect,
             explanation: question.explanation,
